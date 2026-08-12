@@ -1,0 +1,31 @@
+# ── Database credentials — NEVER commit these ──
+includes/db.php
+.env
+*.env
+
+# ── Logs ──
+*.log
+logs/
+
+# ── Backups ──
+backup/
+*.sql.gz
+*.sql.bak
+
+# ── OS junk ──
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Editor files ──
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ── Node (not used in Hostinger version, but guard just in case) ──
+node_modules/
+npm-debug.log
+
+# ── Temp uploads ──
+/tmp/

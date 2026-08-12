@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Perfume Placeholder</title>
+  <desc id="desc">Sample perfume image placeholder for products without a real photo.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f8f2e8" />
+      <stop offset="100%" stop-color="#e9dcc8" />
+    </linearGradient>
+    <linearGradient id="glass" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#fffaf2" stop-opacity="0.95" />
+      <stop offset="100%" stop-color="#ead7b5" stop-opacity="0.9" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" rx="48" fill="url(#bg)" />
+  <circle cx="400" cy="300" r="240" fill="#ffffff" fill-opacity="0.28" />
+  <rect x="250" y="170" width="300" height="110" rx="24" fill="#1f1a17" />
+  <rect x="300" y="250" width="200" height="110" rx="18" fill="#b2874f" />
+  <rect x="165" y="320" width="470" height="450" rx="70" fill="url(#glass)" stroke="#b2874f" stroke-width="18" />
+  <rect x="210" y="380" width="380" height="210" rx="34" fill="#fffaf1" fill-opacity="0.82" />
+  <text x="400" y="465" text-anchor="middle" font-family="Georgia, serif" font-size="54" fill="#5f4527" letter-spacing="5">FLOWER</text>
+  <text x="400" y="530" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" fill="#8f6b3c" letter-spacing="4">PERFUMES</text>
+  <text x="400" y="845" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" fill="#4f3b23" font-weight="700">SAMPLE IMAGE</text>
+  <text x="400" y="892" text-anchor="middle" font-family="Arial, sans-serif" font-size="26" fill="#6d5330">Real product photo can be added later</text>
+</svg>

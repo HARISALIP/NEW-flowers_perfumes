@@ -1,0 +1,63 @@
+# ============================================================
+# .htaccess — Flower Perfumes Hostinger Configuration
+# ============================================================
+
+Options -Indexes
+Options -MultiViews
+
+# ── Charset & MIME types ────────────────────────────────────
+AddDefaultCharset UTF-8
+AddType application/json .json
+AddType image/svg+xml .svg
+AddType font/woff2 .woff2
+
+# ── Security Headers ────────────────────────────────────────
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# ── Protect sensitive directories from direct browser access ─
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Block direct access to includes/ and database/ directories
+    RewriteRule ^includes/.*$ - [F,L]
+    RewriteRule ^database/.*$ - [F,L]
+
+    # Block access to .env files
+    RewriteRule \.env - [F,L]
+    RewriteRule \.git - [F,L]
+</IfModule>
+
+# ── Additional protection via FilesMatch ────────────────────
+<FilesMatch "^(\.env|\.gitignore|composer\.json|package\.json|products\.json)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# ── PHP Settings (Hostinger supports these) ──────────────────
+<IfModule mod_php.c>
+    php_value upload_max_filesize 10M
+    php_value post_max_size 12M
+    php_value max_execution_time 120
+    php_value memory_limit 256M
+</IfModule>
+
+# ── Gzip Compression ────────────────────────────────────────
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json image/svg+xml
+</IfModule>
+
+# ── Browser Caching ─────────────────────────────────────────
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/png  "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 week"
+    ExpiresByType text/css   "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 week"
+</IfModule>

@@ -1,0 +1,60 @@
+/* ==========================================
+   FOOTER & IMMERSIVE COLLECTION
+   ========================================== */
+.footer {
+    background: #000 !important;
+    padding: 80px 0 30px;
+    border-top: 1px solid rgba(212, 175, 55, 0.1);
+    color: #ffffff !important;
+}
+
+.footer a, .footer p, .footer span, .footer div {
+    color: #ffffff !important;
+}
+
+.footer a {
+    opacity: 0.8;
+    transition: 0.3s;
+}
+
+.footer a:hover {
+    color: var(--gold) !important;
+    opacity: 1;
+}
+
+.footer h4 {
+    color: var(--gold) !important;
+    font-family: var(--font-display);
+    margin-bottom: 25px;
+}
+
+.collection-section {
+    position: relative;
+    padding: 120px 0;
+    background: url('images/banner.jpg') no-repeat center center/cover fixed !important;
+    min-height: 800px;
+}
+
+.collection-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 1;
+}
+
+.collection-section .container {
+    position: relative;
+    z-index: 2;
+}
+
+/* Ensure products are visible even if JS fails */
+.collection-card {
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+.reveal.active {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}

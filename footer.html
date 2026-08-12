@@ -1,0 +1,103 @@
+﻿<style>
+    /* Global Footer Text Resets */
+    .footer .footer-desc, 
+    .footer .footer-links-col a, 
+    .footer .footer-bottom p, 
+    .footer .footer-links-col a i {
+        color: #ffffff !important;
+        opacity: 0.9 !important;
+    }
+    .footer .footer-links-col h4 {
+        color: #d4af37 !important; /* Gold headings */
+        margin-bottom: 20px !important;
+        font-size: 1.2rem !important;
+    }
+    .footer .footer-links-col a:hover {
+        color: #d4af37 !important;
+        opacity: 1 !important;
+    }
+    .footer .footer-brand .logo-title {
+        color: #ffffff !important;
+    }
+    
+    .footer .social-icons a {
+        transition: transform 0.3s, color 0.3s !important;
+        display: inline-block !important;
+    }
+    .footer .social-icons a:hover {
+        color: #d4af37 !important;
+        transform: translateY(-5px) !important;
+    }
+    
+    /* Robust Desktop Layout */
+    .footer .footer-grid {
+        display: grid !important;
+        grid-template-columns: 2fr 1fr 1.5fr !important; 
+        gap: 30px !important;
+        align-items: flex-start !important;
+        width: 100% !important;
+    }
+    .footer .footer-links-col, .footer .footer-brand {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 15px !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    /* Aggressive Mobile Layout Fix */
+    @media (max-width: 768px) {
+        .footer .footer-grid {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr !important; 
+            gap: 30px 15px !important;
+        }
+        .footer .footer-brand {
+            grid-column: 1 / -1 !important;
+            width: 100% !important;
+            max-width: none !important;
+            text-align: center !important;
+        }
+        .footer .social-icons {
+            justify-content: center !important;
+        }
+    }
+</style>
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="index.html" style="text-decoration: none; margin-bottom: 15px; display: inline-block;">
+                    <span class="logo-title" style="font-size: 2rem; font-weight: 700; letter-spacing: 4px; color: #fff;">FLOWER</span>
+                    <br>
+                    <span class="logo-subtitle" style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.2rem; color: #d4af37;">Perfumes</span>
+                </a>
+                <p class="footer-desc">Premium authentic fragrances at the heart of Souq Waqif, Doha.</p>
+                <div class="social-icons" style="display: flex; gap: 15px; margin-top: 15px;">
+                    <a href="https://instagram.com" target="_blank" style="font-size: 1.5rem; color: #fff;"><i class='bx bxl-instagram'></i></a>
+                    <a href="https://facebook.com" target="_blank" style="font-size: 1.5rem; color: #fff;"><i class='bx bxl-facebook-circle'></i></a>
+                    <a href="https://tiktok.com" target="_blank" style="font-size: 1.5rem; color: #fff;"><i class='bx bxl-tiktok'></i></a>
+                    <a href="https://youtube.com" target="_blank" style="font-size: 1.5rem; color: #fff;"><i class='bx bxl-youtube'></i></a>
+                </div>
+            </div>
+            <div class="footer-links-col">
+                <h4>Quick Links</h4>
+                <a href="index.html">Home</a>
+                <a href="index.html#about">About</a>
+                <a href="shop.html">Full Shop</a>
+                <a href="contact.html">Contact Us</a>
+                <a href="login.php" style="margin-top: 10px; color: #aaa; font-size: 0.8rem;"><i class='bx bx-lock-alt'></i> Admin Login</a>
+            </div>
+            <div class="footer-links-col">
+                <h4>Store Policies</h4>
+                <a href="privacy-policy.html">Privacy Policy</a>
+                <a href="terms.html">Terms of Service</a>
+                <a href="shipping.html">Shipping Policy</a>
+                <a href="returns.html">Return & Refund</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Flower Perfumes. All rights reserved.</p>
+        </div>
+    </div>
+</footer>

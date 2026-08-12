@@ -1,0 +1,278 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details | FLOWER Perfumes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="css/style.css?v=1.2">
+    <script src="js/ui-loader.js?v=1.2" defer></script>
+    <style>
+        /* Classic Shopify-style Layout Override */
+        body { background: #fff !important; color: #333 !important; }
+        
+        /* Force Header to stay dark if needed, but page body is white */
+        .product-detail-section { padding: 160px 0 80px; background: #fff; }
+        
+        .pd-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; max-width: 1200px; margin: 0 auto; align-items: start; }
+        
+        .pd-left { display: flex; flex-direction: column; gap: 20px; }
+        .pd-main-img { width: 100%; border-radius: 8px; border: 1px solid #eee; overflow: hidden; background: #fafafa; }
+        .pd-main-img img { width: 100%; height: auto; object-fit: contain; }
+        
+        .pd-thumbs { display: flex; gap: 10px; }
+        .pd-thumb { width: 80px; height: 80px; border: 1px solid #eee; border-radius: 4px; cursor: pointer; opacity: 0.6; transition: 0.3s; background: #fafafa; }
+        .pd-thumb.active, .pd-thumb:hover { opacity: 1; border-color: #333; }
+        .pd-thumb img { width: 100%; height: 100%; object-fit: contain; padding: 5px; }
+
+        .pd-right { padding-top: 20px; }
+        .pd-vendor { font-family: 'Inter', sans-serif; font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+        .pd-title { font-family: 'Inter', sans-serif; font-size: 2.5rem; font-weight: 400; color: #111; margin-bottom: 15px; line-height: 1.2; }
+        
+        .pd-price-row { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
+        .pd-price-old { font-size: 1.2rem; color: #888; text-decoration: line-through; }
+        .pd-price-current { font-size: 1.5rem; color: #111; font-weight: 500; }
+        .pd-sale-badge { background: #f4f4f4; border: 1px solid #eee; padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; color: #555; }
+        
+        .pd-shipping { font-size: 0.85rem; color: #666; margin-bottom: 30px; }
+        .pd-shipping span { text-decoration: underline; cursor: pointer; }
+
+        .pd-qty-label { font-size: 0.9rem; color: #333; margin-bottom: 10px; display: block; }
+        .pd-qty-stepper { display: inline-flex; border: 1px solid #ddd; border-radius: 4px; margin-bottom: 30px; }
+        .pd-qty-stepper button { background: none; border: none; padding: 10px 15px; font-size: 1.2rem; color: #555; cursor: pointer; }
+        .pd-qty-stepper input { width: 50px; border: none; text-align: center; font-size: 1rem; color: #333; font-family: 'Inter', sans-serif; pointer-events: none; }
+        
+        .pd-actions { display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px; }
+        .btn-add-cart { background: #fff; border: 1px solid #111; color: #111; padding: 15px; font-size: 1rem; cursor: pointer; transition: 0.3s; text-transform: none; border-radius: 4px; }
+        .btn-add-cart:hover { border-width: 2px; }
+        .btn-buy-now { background: #111; border: 1px solid #111; color: #fff; padding: 15px; font-size: 1rem; cursor: pointer; transition: 0.3s; text-transform: none; border-radius: 4px; }
+        .btn-buy-now:hover { background: #000; }
+
+        .pd-desc { font-family: 'Inter', sans-serif; font-size: 0.95rem; color: #555; line-height: 1.6; margin-bottom: 30px; }
+        
+        .pd-features h3 { font-size: 1.1rem; color: #111; margin-bottom: 15px; font-weight: 500; }
+        .pd-features ul { list-style: disc; padding-left: 20px; color: #555; font-size: 0.95rem; }
+        .pd-features li { margin-bottom: 8px; line-height: 1.5; }
+
+        @media(max-width: 900px) {
+            .pd-grid { grid-template-columns: 1fr; gap: 40px; }
+            .pd-title { font-size: 2rem; }
+        }
+        @media(max-width: 768px) {
+            .product-detail-section { padding: 180px 0 56px; }
+            .pd-grid { gap: 28px; }
+            .pd-right { padding-top: 0; }
+            .pd-title { font-size: 1.8rem; }
+            .pd-price-row { flex-wrap: wrap; }
+            #related-products { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+        }
+        @media(max-width: 480px) {
+            .product-detail-section { padding: 170px 0 48px; }
+            .pd-title { font-size: 1.55rem; }
+            .pd-actions button { font-size: 0.95rem; }
+            #related-products { grid-template-columns: 1fr !important; }
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <section class="product-detail-section" id="product-root">
+        <div class="container text-center" style="padding: 100px 0;">
+            Loading product details...
+        </div>
+    </section>
+
+    <!-- Trending Row -->
+    <section class="section" style="background: #fafafa; border-top: 1px solid #eee; padding: 60px 0;">
+        <div class="container">
+            <h2 style="font-family: 'Inter', sans-serif; font-weight: 400; font-size: 1.8rem; color: #111; margin-bottom: 40px; text-align: center;">You may also like</h2>
+            <div id="related-products" class="trending-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
+                <!-- Related products injected here -->
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+
+    <script type="module" src="js/data.js"></script>
+    <script type="module" src="js/cart.js"></script>
+    <script src="js/script.js?v=1.2"></script>
+    <script>
+        // ---- Product Detail Page Script ----
+        // Uses non-module script so window.renderProductDetails is available immediately
+
+        var _pdRetries = 0;
+        function renderDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+            const root = document.getElementById('product-root');
+
+            const p = window.getProductById ? window.getProductById(id) : null;
+
+            if (!p) {
+                _pdRetries++;
+                if (_pdRetries < 20) {
+                    setTimeout(renderDetails, 400);
+                } else {
+                    root.innerHTML = `<div class="container text-center" style="padding:100px 0;color:#333;"><h2>Product not found</h2><p style="color:#888;margin:12px 0;">ID: ${id || 'none'}</p><a href="shop.html" style="display:inline-block;margin-top:16px;padding:12px 28px;background:#111;color:#fff;text-decoration:none;border-radius:4px;">← Back to Shop</a></div>`;
+                }
+                return;
+            }
+
+            document.title = `${p.title_en} | FLOWER Perfumes`;
+
+            const brand = p.title_en.includes(' - ') ? p.title_en.split(' - ')[0].trim() : 'FLOWER PERFUMES';
+            const namePart = p.title_en.includes(' - ') ? p.title_en.split(' - ')[1].trim() : p.title_en;
+            const oldPrice = p.oldPrice || Math.round(parseFloat(p.price) * 1.22);
+
+            root.innerHTML = `
+            <div class="container">
+                <div class="pd-grid">
+                    <div class="pd-left">
+                        <div class="pd-main-img">
+                            <img src="${p.image}" id="main-img" alt="${p.title_en}" loading="eager"
+                                 onerror="this.src='images/perfume1.jpg'">
+                        </div>
+                        <div class="pd-thumbs">
+                            <div class="pd-thumb active" onclick="window.swapImg('${p.image}', this)">
+                                <img src="${p.image}" onerror="this.src='images/perfume1.jpg'">
+                            </div>
+                            ${p.images ? p.images.map(img => `
+                            <div class="pd-thumb" onclick="window.swapImg('${img}', this)">
+                                <img src="${img}">
+                            </div>
+                            `).join('') : ''}
+                        </div>
+                    </div>
+
+                    <div class="pd-right">
+                        <div class="pd-vendor">${brand.toUpperCase()}</div>
+                        <h1 class="pd-title">${namePart}
+                            ${p.title_ar ? `<span style="font-family:'Amiri',serif; font-size:1.6rem; margin-left:12px; color:#888;">${p.title_ar}</span>` : ''}
+                        </h1>
+
+                        <div class="pd-price-row">
+                            <span class="pd-price-old">QR ${oldPrice}</span>
+                            <span class="pd-price-current">QR ${p.price}</span>
+                            <span class="pd-sale-badge">Sale</span>
+                        </div>
+
+                        <div class="pd-shipping">
+                            <span>Shipping</span> calculated at checkout.
+                        </div>
+
+                        <label class="pd-qty-label" style="margin-bottom:8px;">Size</label>
+                        <div style="display:flex; gap:10px; margin-bottom:25px; flex-wrap:wrap;">
+                            ${(p.sizes || ['100ml']).map((s, idx) => `
+                                <button onclick="this.parentElement.querySelectorAll('button').forEach(b => { b.style.background='#fff'; b.style.color='#555'; b.style.borderColor='#ddd'; }); this.style.background='#111'; this.style.color='#fff'; this.style.borderColor='#111';"
+                                    style="border:1px solid ${idx === 0 ? '#111' : '#ddd'}; background:${idx === 0 ? '#111' : '#fff'}; color:${idx === 0 ? '#fff' : '#555'}; padding:8px 18px; border-radius:4px; cursor:pointer; font-size:0.9rem; transition:0.2s;">${s}</button>
+                            `).join('')}
+                        </div>
+
+                        <label class="pd-qty-label">Quantity</label>
+                        <div class="pd-qty-stepper">
+                            <button onclick="window.updateQty(-1)">-</button>
+                            <input type="number" id="pd-qty-val" value="1" min="1" readonly>
+                            <button onclick="window.updateQty(1)">+</button>
+                        </div>
+
+                        <div class="pd-actions">
+                            <button class="btn-add-cart" onclick="window.addToCartAction(${p.id}, false)">Add to cart</button>
+                            <button class="btn-buy-now" onclick="window.addToCartAction(${p.id}, true)">Buy it now</button>
+                        </div>
+
+                        <div class="pd-desc">
+                            <p style="margin-bottom:10px;">${p.desc_en || 'A timeless fragrance crafted for the elite. Experience the essence of luxury.'}</p>
+                            ${p.desc_ar ? `<p dir="rtl" style="font-family:'Amiri',serif; font-size:1.1rem; color:#666;">${p.desc_ar}</p>` : ''}
+                        </div>
+
+                        <div class="pd-features">
+                            <h3>Key Features</h3>
+                            <ul>
+                                <li><strong>Long Lasting</strong> – ${p.type_en || 'Extrait De Parfum'} concentration.</li>
+                                <li><strong>Premium Ingredients</strong> – Sourced from the finest global materials.</li>
+                                <li><strong>Signature Sillage</strong> – Leaves a powerful, memorable trail.</li>
+                                <li><strong>Authentic Blend</strong> – Traditional craftsmanship meets modern elegance.</li>
+                            </ul>
+                        </div>
+
+                        <div style="margin-top:30px; padding-top:20px; border-top:1px solid #eee; font-size:0.85rem; color:#888;">
+                            <p>📦 Fast delivery to Doha &amp; Qatar &nbsp;|&nbsp; 💬 Order via WhatsApp for instant confirmation</p>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+
+            renderRelated(p.category, p.id);
+        }
+
+        window.swapImg = (src, el) => {
+            const img = document.getElementById('main-img');
+            if (img) img.src = src;
+            document.querySelectorAll('.pd-thumb').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+        };
+
+        window.updateQty = (dir) => {
+            const input = document.getElementById('pd-qty-val');
+            if (!input) return;
+            let val = parseInt(input.value) + dir;
+            if (val < 1) val = 1;
+            input.value = val;
+        };
+
+        window.addToCartAction = (id, checkout) => {
+            const qty = parseInt(document.getElementById('pd-qty-val').value) || 1;
+            if (window.addToCart) {
+                window.addToCart(id, qty);
+                if (checkout) {
+                    window.location.href = 'checkout.html';
+                } else {
+                    if (window.updateCartBadge) window.updateCartBadge();
+                    if (window.showToast) window.showToast('Added to cart!');
+                    else alert('Added to cart!');
+                }
+            }
+        };
+
+        function renderRelated(cat, currentId) {
+            const relatedContainer = document.getElementById('related-products');
+            if (!relatedContainer) return;
+            const all = window.getProducts ? window.getProducts() : [];
+            const filtered = all.filter(p => p.category === cat && p.id !== parseInt(currentId)).slice(0, 4);
+
+            if (!filtered.length) {
+                relatedContainer.style.display = 'none';
+                return;
+            }
+
+            relatedContainer.innerHTML = filtered.map(p => {
+                const nm = p.title_en.includes(' - ') ? p.title_en.split(' - ')[1].trim() : p.title_en;
+                return `
+                <div style="background:#fff; padding:15px; text-align:center; border:1px solid #eee; border-radius:8px; transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 4px 20px rgba(0,0,0,0.1)'" onmouseout="this.style.boxShadow='none'">
+                    <a href="product-detail.html?id=${p.id}">
+                        <img src="${p.image}" alt="${nm}" loading="lazy"
+                             onerror="this.src='images/perfume1.jpg'"
+                             style="width:100%; height:180px; object-fit:contain; margin-bottom:12px;">
+                    </a>
+                    <h3 style="font-size:0.95rem; font-weight:600; color:#111; margin-bottom:4px; line-height:1.3;">${nm}</h3>
+                    <p style="color:#555; font-weight:700; margin-bottom:14px;">QR ${p.price}</p>
+                    <a href="product-detail.html?id=${p.id}" style="display:block; width:100%; padding:10px; background:#111; color:#fff; text-decoration:none; font-size:0.85rem; border-radius:4px; letter-spacing:1px;">VIEW DETAIL</a>
+                </div>`;
+            }).join('');
+        }
+
+        // Set global so data.js can trigger it when products load
+        window.renderProductDetails = renderDetails;
+
+        // Also try immediately in case products are already loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(renderDetails, 300);
+        });
+    </script>
+    <script type="module" src="js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart | FLOWER Perfumes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="css/style.css?v=1.1">
+    <script src="js/ui-loader.js?v=1.2" defer></script>
+    <style>
+        body { background: #000; color: #fff; }
+        .page-header { padding: 160px 0 60px; text-align: center; background: #050505; color: #fff; border-bottom: 1px solid #111; }
+        .page-header h1 { color: var(--gold); font-family: var(--font-display); margin: 0; }
+        .cart-table { width: 100%; border-collapse: collapse; margin-bottom: 50px; }
+        .cart-table th { text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.1em; color: var(--gold); border-bottom: 1px solid #222; padding-bottom: 15px; }
+        .cart-table td { padding: 25px 0; border-bottom: 1px solid #111; color: #fff; }
+        .cart-item-img { width: 100px; height: 100px; object-fit: contain; border-radius: 4px; background: #111; border: 1px solid #222; }
+        .cart-flex { display: flex; align-items: center; gap: 20px; }
+        .cart-item-title { font-size: 1.1rem; font-weight: 500; text-decoration: none; color: #fff; }
+        .qty-input { width: 60px; padding: 10px; background: #111; border: 1px solid #333; color: #fff; border-radius: 2px; text-align: center; }
+        .btn-remove { background: none; border: none; color: #666; cursor: pointer; font-size: 0.9rem; transition: 0.3s; }
+        .btn-remove:hover { color: #ff4444; }
+        .cart-summary { max-width: 400px; margin-left: auto; padding: 30px; border: 1px solid #222; border-radius: 8px; background: #0a0a0a; }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 1rem; color: #aaa; }
+        .summary-total { font-weight: 700; font-size: 1.25rem; border-top: 1px solid #222; padding-top: 20px; color: var(--gold); margin-top: 20px;}
+        .empty-cart { text-align: center; padding: 100px 0; color: #888; }
+        .btn-checkout { background: var(--gold-gradient-rich) !important; color: #000 !important; font-weight: 700 !important; border: none; border-radius: 4px; padding: 15px; width: 100%; display: block; text-align: center; text-decoration: none; margin-top: 20px; }
+
+        @media(max-width: 768px) {
+            .page-header { padding: 180px 0 44px; }
+            .cart-table thead { display: none; }
+            .cart-table, .cart-table tbody, .cart-table tr, .cart-table td { display: block; width: 100%; }
+            .cart-table tr { 
+                margin-bottom: 25px; 
+                padding: 15px; 
+                background: #0a0a0a; 
+                border: 1px solid #222; 
+                border-radius: 8px; 
+                box-shadow: 0 8px 22px rgba(0,0,0,0.2); 
+            }
+            .cart-table td { 
+                border: none; 
+                padding: 8px 0; 
+                display: flex; 
+                justify-content: space-between; 
+                align-items: center; 
+                font-size: 0.9rem;
+                color: #fff;
+            }
+            .cart-table td:first-child { 
+                flex-direction: column; 
+                align-items: flex-start;
+                padding-bottom: 15px;
+                border-bottom: 1px solid #1d1d1d;
+                margin-bottom: 10px;
+            }
+            .cart-table td::before { 
+                content: attr(data-label); 
+                font-weight: 600; 
+                color: #a3a3a3; 
+                text-transform: uppercase; 
+                font-size: 0.7rem; 
+            }
+            .cart-table td:first-child::before { content: none; }
+            .cart-item-img { width: 80px; height: 80px; }
+            .cart-summary { margin: 30px 0; width: 100%; border-radius: 8px; }
+        }
+        @media(max-width: 480px) {
+            .page-header { padding: 170px 0 36px; }
+            .cart-flex { gap: 14px; }
+            .qty-input { width: 54px; padding: 8px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <section class="page-header">
+        <div class="container">
+            <h1>Shopping Cart</h1>
+        </div>
+    </section>
+
+    <section class="section" style="min-height: 50vh;">
+        <div class="container" id="cart-container">
+            <!-- Rendered by JS -->
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+
+    <script type="module" src="js/data.js"></script>
+    <script type="module" src="js/cart.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script src="js/script.js?v=1.2"></script>
+    <script type="module">
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.renderCartPage) window.renderCartPage();
+        });
+
+        const renderCartPage = () => {
+            const container = document.getElementById('cart-container');
+            const cartItems = getCart();
+
+            if (cartItems.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-cart">
+                        <h2>Your cart is empty</h2>
+                        <p style="margin-bottom: 20px;">Looks like you haven't added anything yet.</p>
+                        <a href="shop.html" class="btn btn-primary">Continue Shopping</a>
+                    </div>
+                `;
+                return;
+            }
+
+            let subtotal = 0;
+            let rowsHtml = '';
+
+            cartItems.forEach(item => {
+                const itemPrice = parseFloat(item.price) || 0;
+                const itemQty = parseInt(item.quantity) || 0;
+                const total = itemPrice * itemQty;
+                subtotal += total;
+                rowsHtml += `
+                    <tr>
+                        <td>
+                            <div class="cart-flex">
+                                <img src="${item.image || 'https://placehold.co/100'}" alt="${item.title || 'Product'}" class="cart-item-img">
+                                <div>
+                                    <h4 style="margin:0; font-family:'Inter', sans-serif;">${item.title || 'Product'}</h4>
+                                </div>
+                            </div>
+                        </td>
+                        <td data-label="Price">QR ${itemPrice.toLocaleString()}</td>
+                        <td data-label="Quantity">
+                            <input type="number" class="qty-input" value="${itemQty}" min="1" onchange="window.updateQty(${item.id}, this.value)">
+                        </td>
+                        <td data-label="Total" style="font-weight:600;">QR ${total.toLocaleString()}</td>
+                        <td data-label="Remove">
+                            <button class="btn-remove" onclick="window.removeItem(${item.id})"><i class='bx bx-x' style="font-size: 1.5rem;"></i></button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            const tax = 0; // No tax for luxury perfumes here as requested in earlier sessions
+            const grandTotal = subtotal + tax;
+
+            container.innerHTML = `
+                <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+                    <button onclick="window.clearAllItems()" style="background: none; border: 1px solid #333; color: #fff; padding: 8px 15px; border-radius: 4px; cursor: pointer; transition: 0.3s; font-family: 'Inter', sans-serif; font-size: 0.85rem;"><i class='bx bx-trash' style="margin-right: 5px;"></i> Clear All Cart</button>
+                </div>
+                <table class="cart-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rowsHtml}
+                    </tbody>
+                </table>
+                <div class="cart-summary">
+                    <h3 style="color:var(--gold); margin-bottom:20px;">Order Summary</h3>
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span>QR ${subtotal}</span>
+                    </div>
+                    <div class="summary-row summary-total">
+                        <span>Total</span>
+                        <span>QR ${grandTotal}</span>
+                    </div>
+                    <a href="checkout.html" class="btn-checkout">Proceed to Checkout</a>
+                </div>
+            `;
+        };
+
+        window.renderCartPage = renderCartPage;
+
+        window.updateQty = (id, val) => {
+            if (window.updateCartQuantity) window.updateCartQuantity(id, parseInt(val));
+            renderCartPage();
+        };
+
+        window.removeItem = (id) => {
+            if (window.removeFromCart) window.removeFromCart(id);
+            renderCartPage();
+        };
+        
+        window.clearAllItems = () => {
+            if (window.clearCart) window.clearCart();
+            renderCartPage();
+        };
+    </script>
+</body>
+</html>
