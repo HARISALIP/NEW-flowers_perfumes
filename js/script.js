@@ -138,7 +138,20 @@ async function fetchProducts() {
             renderLatest();
         }
     } catch (error) {
-        console.warn('Sync failed, sticking with local data:', error);
+        console.warn('Sync with API failed, falling back to products.json:', error);
+        try {
+            const fallbackResponse = await fetch('products.json');
+            const fallbackData = await fallbackResponse.json();
+            if (fallbackData && Array.isArray(fallbackData) && fallbackData.length > 0) {
+                allProducts = fallbackData;
+                renderProducts();
+                renderBrandDiscovery();
+                renderTrending();
+                renderLatest();
+            }
+        } catch (fallbackError) {
+            console.warn('Fallback failed, sticking with defaultProducts:', fallbackError);
+        }
     }
 }
 
@@ -146,19 +159,22 @@ function renderLatest() {
     const container = document.getElementById('latest-container');
     if (!container || allProducts.length === 0) return;
     
-    // Pick newest 3 items or products with NEW badge
-    let latest = allProducts.filter(p => 
-        (p.badge_en && p.badge_en.toLowerCase().includes('new')) || 
-        (p.title_en && p.title_en.includes('MIDNIGHT'))
+    // Sort all products by ID descending to get the truly newest items first
+    const sortedByNewest = [...allProducts].sort((a, b) => b.id - a.id);
+    
+    // Filter for products that have a NEW badge
+    let latest = sortedByNewest.filter(p => 
+        (p.badge_en && p.badge_en.toLowerCase().includes('new'))
     );
     
-    // If we don't have enough specific "new" items, pad it with other items to reach exactly 3
+    // Pad with other newest items if we have less than 4
     if (latest.length < 4) {
-        const others = allProducts.filter(p => !latest.includes(p));
+        const others = sortedByNewest.filter(p => !latest.includes(p));
         latest = [...latest, ...others].slice(0, 4);
     } else {
         latest = latest.slice(0, 4);
     }
+    
     if (latest.length === 0) return; // Still nothing, don't wipe hardcoded
 
     container.innerHTML = ''; // Wipe hardcoded
@@ -172,19 +188,12 @@ function renderTrending() {
     const container = document.getElementById('trending-container');
     if (!container || allProducts.length === 0) return;
 
-    // Filter for trending (bestsellers, award winners, etc)
-    let trending = allProducts.filter(p => 
-        (p.badge_en && p.badge_en.toLowerCase().includes('best')) ||
-        (p.badge_en && p.badge_en.toLowerCase().includes('award')) ||
-        (p.title_en && p.title_en.includes('ROSE'))
-    );
-    
-    // Ensure we have exactly 3 items
-    if (trending.length < 4) {
-        const others = allProducts.filter(p => !trending.includes(p));
-        trending = [...trending, ...others];
-    }
-    trending = trending.slice(0, 4);
+    // Grab the 25 newest products, then sort them by price descending to showcase the premium new items as "Trending"
+    let trending = [...allProducts]
+        .sort((a, b) => b.id - a.id)
+        .slice(0, 25)
+        .sort((a, b) => parseFloat(b.price) - parseFloat(a.price))
+        .slice(0, 4);
 
     if (trending.length === 0) return;
 
@@ -210,22 +219,30 @@ window.showToast = function(message) {
 function createFeaturedCard(product, lang) {
     const title = lang === 'ar' ? product.title_ar : product.title_en;
     const badge = lang === 'ar' ? product.badge_ar : product.badge_en;
-    
+    const brand = getBrandName(product);
+    const type  = lang === 'ar' ? (product.type_ar || '') : (product.type_en || 'Extrait De Parfum');
+
     const card = document.createElement('div');
-    card.className = 'trending-card visible';
-    card.style.opacity = '1';
-    card.style.visibility = 'visible';
-    card.style.transform = 'none';
+    card.className = 'trending-card premium-card visible';
+
     card.innerHTML = `
-        <a href="product-detail.html?id=${product.id}" style="text-decoration: none; display: block; color: inherit;">
-            <div class="trending-img">
-                <img src="${product.image}" alt="${title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&q=80&w=400'">
-                ${badge ? `<div class="trending-badge">${badge}</div>` : ''}
+        <a href="product-detail.html?id=${product.id}" class="premium-card-link">
+            <div class="premium-card-img-wrap">
+                <img src="${product.image}" alt="${title}" loading="lazy"
+                     onerror="this.src='images/perfume1.jpg'">
+                ${badge ? `<span class="premium-card-badge">${badge}</span>` : ''}
             </div>
-            <div class="trending-info text-center">
-                <h3 class="trending-title" style="color:#ffffff !important; font-weight:700;">${title}</h3>
-                <p class="trending-price" style="color:#ffffff !important; margin-bottom: 15px;">QR ${product.price}</p>
-                <span style="color: var(--gold); font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase;">Discover <i class="fa-solid fa-arrow-right" style="margin-left: 5px;"></i></span>
+            <div class="premium-card-body">
+                <p class="premium-card-brand">${brand}</p>
+                <h3 class="premium-card-name">${title}</h3>
+                <p class="premium-card-type">${type}</p>
+                <div class="premium-card-footer">
+                    <span class="premium-card-price">QR ${product.price}</span>
+                    <div class="premium-card-actions">
+                        <button class="pca-cart" onclick="event.preventDefault();event.stopPropagation();if(window.addToCart)window.addToCart(${product.id});if(window.showToast)window.showToast('Added to cart!');">ADD TO CART</button>
+                        <a href="product-detail.html?id=${product.id}" class="pca-view">VIEW</a>
+                    </div>
+                </div>
             </div>
         </a>
     `;
@@ -238,7 +255,8 @@ function getBrandName(product) {
 }
 
 function getHomeProducts(products) {
-    let filtered = [...products];
+    // Sort by descending ID to prioritize the newly added products
+    let filtered = [...products].sort((a, b) => b.id - a.id);
 
     if (homeCategoryFilter !== 'all') {
         filtered = filtered.filter((product) => product.category === homeCategoryFilter);
@@ -254,23 +272,7 @@ function getHomeProducts(products) {
         );
     }
 
-    // Ensure variety by picking first from different brands when showing "All"
-    if (homeCategoryFilter === 'all' && !homeSearchTerm) {
-        const brands = new Set();
-        const diverse = [];
-        const others = [];
-        for (const p of filtered) {
-            const b = getBrandName(p);
-            if (!brands.has(b)) {
-                brands.add(b);
-                diverse.push(p);
-            } else {
-                others.push(p);
-            }
-        }
-        filtered = [...diverse, ...others];
-    }
-
+    // The grid will simply display the most recently added items first.
     return filtered.slice(0, 8);
 }
 
@@ -286,7 +288,11 @@ function renderBrandDiscovery() {
     });
 
     const topBrands = [...grouped.entries()]
-        .sort((a, b) => b[1].length - a[1].length)
+        .sort((a, b) => {
+            const maxIdA = Math.max(...a[1].map(p => p.id));
+            const maxIdB = Math.max(...b[1].map(p => p.id));
+            return maxIdB - maxIdA;
+        })
         .slice(0, 4);
 
     container.innerHTML = topBrands.map(([brand, items]) => {
@@ -335,7 +341,7 @@ function renderProducts(productsToRender) {
     if (!container) return;
     
     // If no products provided, try to fetch from global store
-    const products = productsToRender || (window.getProducts ? window.getProducts() : []);
+    const products = productsToRender || (window.getProducts ? window.getProducts() : allProducts);
     
     if (!products || products.length === 0) {
         // Don't clear if we're still waiting for data
@@ -357,43 +363,29 @@ function renderProducts(productsToRender) {
         const brand = getBrandName(product);
 
         const card = document.createElement('div');
-        card.className = 'collection-card reveal active';
-        let badgeHtml = badge ? `<div class="card-badge premium">${badge}</div>` : '';
+        card.className = 'premium-card';
 
-        if (isHomeCollection) {
-            card.innerHTML = `
-                <div class="card-image" style="height: 100%;">
-                    <a href="product-detail.html?id=${product.id}" style="display:block; height:100%;">
-                        <img src="${product.image}" alt="${title}" loading="lazy" onerror="this.src='images/perfume1.jpg'" style="height: 100%; object-fit: cover;">
-                    </a>
-                    ${badgeHtml}
-                    <div class="card-info-overlay">
-                        <p class="product-brand">${brand}</p>
-                        <p class="product-type">${type}</p>
-                        <p class="product-price">QR ${product.price}</p>
-                        <div class="card-actions">
-                            <button class="btn btn-gold" onclick="addToCart(${product.id})">ADD TO CART</button>
-                            <a href="product-detail.html?id=${product.id}" class="btn btn-outline">VIEW</a>
+        card.innerHTML = `
+            <a href="product-detail.html?id=${product.id}" class="premium-card-link">
+                <div class="premium-card-img-wrap">
+                    <img src="${product.image}" alt="${title}" loading="lazy"
+                         onerror="this.src='images/perfume1.jpg'">
+                    ${badge ? `<span class="premium-card-badge">${badge}</span>` : ''}
+                </div>
+                <div class="premium-card-body">
+                    <p class="premium-card-brand">${brand}</p>
+                    <h3 class="premium-card-name">${title}</h3>
+                    <p class="premium-card-type">${type}</p>
+                    <div class="premium-card-footer">
+                        <span class="premium-card-price">QR ${product.price}</span>
+                        <div class="premium-card-actions">
+                            <button class="pca-cart" onclick="event.preventDefault();event.stopPropagation();if(window.addToCart)window.addToCart(${product.id});if(window.showToast)window.showToast('Added to cart!');">ADD TO CART</button>
+                            <a href="product-detail.html?id=${product.id}" class="pca-view">VIEW</a>
                         </div>
                     </div>
                 </div>
-            `;
-        } else {
-            card.innerHTML = `
-                <a href="product-detail.html?id=${product.id}" style="text-decoration: none; display: block; color: inherit; height: 100%;">
-                    <div class="card-image">
-                        <img src="${product.image}" alt="${title}" onerror="this.src='images/perfume1.jpg'">
-                        ${badgeHtml}
-                    </div>
-                    <div class="card-info text-center">
-                        <h3 class="product-title" style="color:#ffffff !important;">${title}</h3>
-                        <p class="product-type" style="color:#aaa;">${type}</p>
-                        <p class="product-price" style="color:#ffffff !important; margin-bottom: 15px;">QR ${product.price}</p>
-                        <span style="color: var(--gold); font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase;">Discover <i class="fa-solid fa-arrow-right" style="margin-left: 5px;"></i></span>
-                    </div>
-                </a>
-            `;
-        }
+            </a>
+        `;
         container.appendChild(card);
     });
 }

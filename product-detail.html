@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="css/style.css?v=1.2">
+    <link rel="stylesheet" href="css/style.css?v=2.0">
     <script src="js/ui-loader.js?v=1.2" defer></script>
     <style>
         /* Classic Shopify-style Layout Override */
@@ -117,7 +117,7 @@
                 if (_pdRetries < 20) {
                     setTimeout(renderDetails, 400);
                 } else {
-                    root.innerHTML = `<div class="container text-center" style="padding:100px 0;color:#333;"><h2>Product not found</h2><p style="color:#888;margin:12px 0;">ID: ${id || 'none'}</p><a href="shop.html" style="display:inline-block;margin-top:16px;padding:12px 28px;background:#111;color:#fff;text-decoration:none;border-radius:4px;">← Back to Shop</a></div>`;
+                    root.innerHTML = `<div class="container text-center" style="padding:100px 0;color:#333;"><h2>Product not found</h2><p style="color:#888;margin:12px 0;">ID: ${id || 'none'}</p><a href="shop.html" style="display:inline-block;margin-top:16px;padding:12px 28px;background:#111;color:#fff;text-decoration:none;border-radius:4px;">? Back to Shop</a></div>`;
                 }
                 return;
             }
@@ -192,15 +192,15 @@
                         <div class="pd-features">
                             <h3>Key Features</h3>
                             <ul>
-                                <li><strong>Long Lasting</strong> – ${p.type_en || 'Extrait De Parfum'} concentration.</li>
-                                <li><strong>Premium Ingredients</strong> – Sourced from the finest global materials.</li>
-                                <li><strong>Signature Sillage</strong> – Leaves a powerful, memorable trail.</li>
-                                <li><strong>Authentic Blend</strong> – Traditional craftsmanship meets modern elegance.</li>
+                                <li><strong>Long Lasting</strong> � ${p.type_en || 'Extrait De Parfum'} concentration.</li>
+                                <li><strong>Premium Ingredients</strong> � Sourced from the finest global materials.</li>
+                                <li><strong>Signature Sillage</strong> � Leaves a powerful, memorable trail.</li>
+                                <li><strong>Authentic Blend</strong> � Traditional craftsmanship meets modern elegance.</li>
                             </ul>
                         </div>
 
                         <div style="margin-top:30px; padding-top:20px; border-top:1px solid #eee; font-size:0.85rem; color:#888;">
-                            <p>📦 Fast delivery to Doha &amp; Qatar &nbsp;|&nbsp; 💬 Order via WhatsApp for instant confirmation</p>
+                            <p>?? Fast delivery to Doha &amp; Qatar &nbsp;|&nbsp; ?? Order via WhatsApp for instant confirmation</p>
                         </div>
                     </div>
                 </div>
@@ -276,3 +276,4 @@
     <script type="module" src="js/auth.js"></script>
 </body>
 </html>
+

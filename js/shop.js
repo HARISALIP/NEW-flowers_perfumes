@@ -1,4 +1,4 @@
-﻿// shop.js — Shop page logic (v2)
+// shop.js — Shop page logic (v2)
 // NOTE: uses shopProducts (not allProducts) to avoid conflict with script.js global
 
 var shopProducts = [];
@@ -78,106 +78,93 @@ function initShop() {
     filterProducts();
 }
 
-/* ── Card builder — fully DOM-based, zero style.css dependency ── */
+/* ── Card builder — premium dark card ── */
 function createShopCard(product) {
     var brand    = getBrandName(product);
     var namePart = product.title_en.includes(' - ') ? product.title_en.split(' - ')[1].trim() : product.title_en;
     var imgSrc   = product.image || ('images/perfume' + (((product.id - 1) % 8) + 1) + '.jpg');
+    var badge    = product.badge_en || '';
+    var type     = product.type_en  || 'Extrait De Parfum';
 
-    /* Card wrapper = <a> */
-    var card = document.createElement('a');
-    card.href = 'product-detail.html?id=' + product.id;
-    card.style.cssText = 'text-decoration:none;color:inherit;display:flex;flex-direction:column;' +
-        'background:linear-gradient(160deg,#0d1a0e,#060d07);' +
-        'border:1px solid rgba(212,175,55,0.18);border-radius:16px;overflow:hidden;' +
-        'box-shadow:0 6px 28px rgba(0,0,0,0.38);' +
-        'transition:transform .25s,box-shadow .25s,border-color .25s;cursor:pointer;';
+    var card = document.createElement('div');
+    card.className = 'premium-card';
+
+    var link = document.createElement('a');
+    link.href = 'product-detail.html?id=' + product.id;
+    link.className = 'premium-card-link';
 
     /* Image area */
     var imgWrap = document.createElement('div');
-    imgWrap.style.cssText = 'position:relative;flex-shrink:0;height:220px;background:#060d07;overflow:hidden;';
+    imgWrap.className = 'premium-card-img-wrap';
 
     var img = document.createElement('img');
     img.src = imgSrc;
     img.alt = namePart;
     img.loading = 'lazy';
-    img.style.cssText = 'width:100%;height:100%;object-fit:contain;display:block;padding:10px;box-sizing:border-box;transition:transform .4s ease;';
     img.onerror = function(){ this.src = 'images/perfume1.jpg'; };
     imgWrap.appendChild(img);
 
-    if (product.badge_en) {
-        var badge = document.createElement('span');
-        badge.textContent = product.badge_en;
-        badge.style.cssText = 'position:absolute;top:10px;left:10px;' +
-            'background:#d4af37;color:#000;font-size:0.58rem;font-weight:800;' +
-            'letter-spacing:1.5px;padding:4px 9px;border-radius:20px;text-transform:uppercase;' +
-            'font-family:Montserrat,sans-serif;';
-        imgWrap.appendChild(badge);
+    if (badge) {
+        var badgeEl = document.createElement('span');
+        badgeEl.className = 'premium-card-badge';
+        badgeEl.textContent = badge;
+        imgWrap.appendChild(badgeEl);
     }
-    card.appendChild(imgWrap);
+    link.appendChild(imgWrap);
 
-    /* Info panel — always visible below image */
-    var info = document.createElement('div');
-    info.style.cssText = 'padding:13px 14px 14px;display:flex;flex-direction:column;gap:4px;' +
-        'background:linear-gradient(180deg,#0d1a0e,#060d07);flex:1;';
+    /* Info body */
+    var body = document.createElement('div');
+    body.className = 'premium-card-body';
 
     var brandEl = document.createElement('p');
+    brandEl.className = 'premium-card-brand';
     brandEl.textContent = brand;
-    brandEl.style.cssText = 'margin:0;color:#d4af37;font-size:0.63rem;font-weight:800;' +
-        'letter-spacing:2.5px;text-transform:uppercase;font-family:Montserrat,sans-serif;';
 
     var nameEl = document.createElement('h3');
+    nameEl.className = 'premium-card-name';
     nameEl.textContent = namePart;
-    nameEl.style.cssText = "margin:0;color:#fff4dc;font-family:'Playfair Display',serif;" +
-        'font-size:0.92rem;font-weight:700;line-height:1.3;';
 
     var typeEl = document.createElement('p');
-    typeEl.textContent = product.type_en || 'Extrait De Parfum';
-    typeEl.style.cssText = 'margin:0;color:rgba(255,255,255,0.45);font-size:0.7rem;font-family:Montserrat,sans-serif;';
+    typeEl.className = 'premium-card-type';
+    typeEl.textContent = type;
 
-    var row = document.createElement('div');
-    row.style.cssText = 'display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;';
+    var footer = document.createElement('div');
+    footer.className = 'premium-card-footer';
 
     var price = document.createElement('span');
+    price.className = 'premium-card-price';
     price.textContent = 'QR ' + product.price;
-    price.style.cssText = 'color:#fff;font-size:1rem;font-weight:800;font-family:Montserrat,sans-serif;';
 
-    var btns = document.createElement('div');
-    btns.style.cssText = 'display:flex;gap:5px;';
+    var actions = document.createElement('div');
+    actions.className = 'premium-card-actions';
 
     var cartBtn = document.createElement('button');
-    cartBtn.textContent = 'CART';
-    cartBtn.style.cssText = 'background:#d4af37;color:#000;border:none;padding:6px 10px;' +
-        'font-size:0.58rem;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;' +
-        'border-radius:20px;cursor:pointer;font-family:Montserrat,sans-serif;';
+    cartBtn.className = 'pca-cart';
+    cartBtn.textContent = 'ADD TO CART';
     cartBtn.addEventListener('click', function(e) {
         e.preventDefault(); e.stopPropagation();
         if (window.addToCart) window.addToCart(product.id);
         if (window.showToast) window.showToast('Added to cart!');
     });
 
-    btns.appendChild(cartBtn);
-    row.appendChild(price);
-    row.appendChild(btns);
-    info.appendChild(brandEl);
-    info.appendChild(nameEl);
-    info.appendChild(typeEl);
-    info.appendChild(row);
-    card.appendChild(info);
+    var viewBtn = document.createElement('a');
+    viewBtn.className = 'pca-view';
+    viewBtn.textContent = 'VIEW';
+    viewBtn.href = 'product-detail.html?id=' + product.id;
+    viewBtn.addEventListener('click', function(e){ e.stopPropagation(); });
 
-    /* Hover */
-    card.addEventListener('mouseenter', function() {
-        card.style.transform = 'translateY(-6px)';
-        card.style.boxShadow = '0 18px 48px rgba(0,0,0,0.55)';
-        card.style.borderColor = 'rgba(212,175,55,0.38)';
-        img.style.transform = 'scale(1.06)';
-    });
-    card.addEventListener('mouseleave', function() {
-        card.style.transform = 'translateY(0)';
-        card.style.boxShadow = '0 6px 28px rgba(0,0,0,0.38)';
-        card.style.borderColor = 'rgba(212,175,55,0.18)';
-        img.style.transform = 'scale(1)';
-    });
+    actions.appendChild(cartBtn);
+    actions.appendChild(viewBtn);
+    footer.appendChild(price);
+    footer.appendChild(actions);
+
+    body.appendChild(brandEl);
+    body.appendChild(nameEl);
+    body.appendChild(typeEl);
+    body.appendChild(footer);
+
+    link.appendChild(body);
+    card.appendChild(link);
 
     return card;
 }
@@ -224,7 +211,14 @@ function appendBatch() {
 function renderProducts(list) {
     var container = document.getElementById('shop-container');
     if (!container) return;
-    var products = list || shopProducts;
+    
+    // If called without arguments (e.g., from script.js global fetch), re-apply filters & sort
+    if (!list) {
+        filterProducts();
+        return;
+    }
+    
+    var products = list;
     disconnectShopObserver();
     if (!products || !products.length) {
         container.innerHTML = '<p style="text-align:center;width:100%;color:#b8ab8a;padding:60px 0;">No perfumes found.</p>';
@@ -258,7 +252,7 @@ function filterProducts() {
         return ok && (cat === 'all' || p.category === cat);
     });
 
-    if (typ === 'new')  out.sort(function(a,b){ return b.id - a.id; });
+    if (typ === 'new' || typ === 'all' || typ === 'featured') out.sort(function(a,b){ return b.id - a.id; });
     if (typ === 'low')  out.sort(function(a,b){ return parseFloat(a.price) - parseFloat(b.price); });
     if (typ === 'high') out.sort(function(a,b){ return parseFloat(b.price) - parseFloat(a.price); });
     if (typ === 'best') out = out.filter(function(p){ return p.badge_en && p.badge_en.includes('BEST') || p.featured; });

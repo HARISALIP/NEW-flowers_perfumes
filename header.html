@@ -1,4 +1,4 @@
-﻿<style>
+<style>
     .hide-mobile {
         display: inline-flex;
     }
@@ -352,10 +352,10 @@
             </div>
             <i class='bx bx-x close-btn' id="close-btn"></i>
         </div>
-        <div class="mobile-nav-links">
+        <div class="mobile-nav-links" style="margin-top: 50px; display: flex; flex-direction: column; gap: 25px;">
             <a href="index.html" class="mob-link">Home / الرئيسية</a>
             <a href="index.html#about" class="mob-link">About / من نحن</a>
-            <a href="shop.html" class="mob-link gold" style="font-size: 1.8rem !important;">SHOP ONLINE</a>
+            <a href="shop.html" class="mob-link gold">All Perfumes / كل العطور</a>
             <a href="contact.html" class="mob-link">Contact / اتصل بنا</a>
             <a href="admin.php" class="mob-link admin-nav-item" style="display: none; color: var(--gold);">Dashboard</a>
             <a href="login.php" class="mob-link auth-link">Login</a>
@@ -422,18 +422,7 @@
     <a href="https://wa.me/97455382148" target="_blank" class="floating-btn btn-wa delayed-show" id="whatsapp-float" aria-label="WhatsApp"><i class='bx bxl-whatsapp'></i></a>
 </div>
 
-<!-- Google Translate Widget -->
-<div id="google_translate_element"></div>
-<script type="text/javascript">
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement({
-    pageLanguage: 'en',
-    includedLanguages: 'en,ar',
-    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-  }, 'google_translate_element');
-}
-</script>
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 <script>
   // Show WhatsApp floating button after 5 seconds
   window.addEventListener('DOMContentLoaded', () => {
@@ -445,3 +434,4 @@ function googleTranslateElementInit() {
     }, 5000);
   });
 </script>
+

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="css/style.css?v=1.1">
+    <link rel="stylesheet" href="css/style.css?v=2.0">
     <script src="js/ui-loader.js?v=1.2" defer></script>
     <style>
         body { background: #000; color: #fff; }
@@ -229,17 +229,17 @@
             const itemsString = cartItems.map(item => {
                 const itemTotal = parseFloat(item.price) * parseInt(item.quantity);
                 total += itemTotal;
-                return `• ${item.title} (${item.quantity}x) - QR ${itemTotal}`;
+                return `� ${item.title} (${item.quantity}x) - QR ${itemTotal}`;
             }).join('%0A');
 
-            const message = `✨ *NEW ORDER - FLOWER PERFUMES* ✨%0A%0A` +
-                            `👤 *Customer:* ${name}%0A` +
-                            `📞 *Phone:* ${phone}%0A` +
-                            `📧 *Email:* ${email}%0A` +
-                            `📍 *Address:* ${address}, ${city}%0A` +
-                            (notes ? `📝 *Notes:* ${notes}%0A` : '') +
-                            `%0A📦 *Items Ordered:*%0A${itemsString}%0A%0A` +
-                            `💰 *Total Amount:* QR ${total}%0A%0A` +
+            const message = `? *NEW ORDER - FLOWER PERFUMES* ?%0A%0A` +
+                            `?? *Customer:* ${name}%0A` +
+                            `?? *Phone:* ${phone}%0A` +
+                            `?? *Email:* ${email}%0A` +
+                            `?? *Address:* ${address}, ${city}%0A` +
+                            (notes ? `?? *Notes:* ${notes}%0A` : '') +
+                            `%0A?? *Items Ordered:*%0A${itemsString}%0A%0A` +
+                            `?? *Total Amount:* QR ${total}%0A%0A` +
                             `Please confirm my order and share the delivery timeline. Thank you!`;
 
             const whatsappUrl = `https://wa.me/97455382148?text=${message}`;
@@ -265,3 +265,4 @@
     <script type="module" src="js/auth.js"></script>
 </body>
 </html>
+
