@@ -2171,6 +2171,21 @@ html[dir="rtl"] .floating-wa {
     .trending-grid   { grid-template-columns: repeat(2, 1fr) !important; gap: 14px !important; }
     .premium-card-img-wrap { height: 200px; }
     .premium-card-name { font-size: 0.88rem; }
+    
+    .about-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    .about-images {
+        height: 350px;
+        margin-bottom: 20px;
+    }
+    .about-content {
+        text-align: center;
+    }
+    .about-content .gold-divider {
+        margin: 10px auto 20px auto;
+    }
 }
 @media (max-width: 480px) {
     .premium-card-img-wrap { height: 175px; }
